@@ -1,6 +1,6 @@
 const { client, indexName, recipes } = require("./config");
 const { logBody } = require("./helpers");
-
+// curl.exe -X GET https://localhost:9200 -u "admin:admin" --insecure
 /**
  * Indexing data from json file with recipes.
  * Format: action \n document \n action \n document ...
@@ -13,7 +13,7 @@ module.exports.injectData = () => {
     doc,
   ]);
 
-  client.bulk({ refresh: true, body }, logBody);
+  return client.bulk({refresh: true, body}, logBody)
 };
 
 /**

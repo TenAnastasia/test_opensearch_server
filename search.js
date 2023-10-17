@@ -6,7 +6,7 @@ const { logTitles } = require("./helpers");
  * run-func search match title "soups with beer and garlic"
  * run-func search match title "pizza salad and cheese"
  */
-module.exports.match = (field, query) => {
+module.exports.match = async (field, query) => {
   const body = {
     query: {
       match: {
@@ -16,13 +16,13 @@ module.exports.match = (field, query) => {
       },
     },
   };
-  client.search(
+  let result = await client.search(
     {
       index,
       body,
-    },
-    logTitles
+    }
   );
+  return result.body.hits.hits
 };
 
 /**
@@ -77,7 +77,7 @@ module.exports.queryString = (field, query) => {
  * Searching for exact matches of a value in a field (term-level query)
  * run-func search term sodium 0
  */
-module.exports.term = (field, value) => {
+module.exports.term = async (field, value) => {
   const body = {
     query: {
       term: {
@@ -85,13 +85,14 @@ module.exports.term = (field, value) => {
       },
     },
   };
-  client.search(
+  let result = await client.search(
     {
       index,
       body,
     },
     logTitles
   );
+  return result.body.hits.hits
 };
 
 /**

@@ -1,4 +1,5 @@
-.env
+.idea
 package-lock.json
 node_modules
-full_format_recipes.json
+user.json
+aggregate.js
