@@ -1,5 +1,5 @@
-const { client, indexName: index } = require("./config");
-const { logTitles } = require("./helpers");
+const {client, indexName: index} = require("./config");
+const {logTitles} = require("./helpers");
 
 /**
  * Finding matches sorted by relevance (full-text query)
@@ -7,22 +7,22 @@ const { logTitles } = require("./helpers");
  * run-func search match title "pizza salad and cheese"
  */
 module.exports.match = async (field, query) => {
-  const body = {
-    query: {
-      match: {
-        [field]: {
-          query,
+    const body = {
+        query: {
+            match: {
+                [field]: {
+                    query,
+                },
+            },
         },
-      },
-    },
-  };
-  let result = await client.search(
-    {
-      index,
-      body,
-    }
-  );
-  return result.body.hits.hits
+    };
+    let result = await client.search(
+        {
+            index,
+            body,
+        }
+    );
+    return result.body.hits.hits
 };
 
 /**
@@ -31,23 +31,23 @@ module.exports.match = async (field, query) => {
  * run-func search phrase title 'milk chocolate cake'
  */
 module.exports.phrase = (field, query, slop) => {
-  const body = {
-    query: {
-      match_phrase: {
-        [field]: {
-          query,
-          slop
+    const body = {
+        query: {
+            match_phrase: {
+                [field]: {
+                    query,
+                    slop
+                },
+            },
         },
-      },
-    },
-  };
-  client.search(
-    {
-      index,
-      body,
-    },
-    logTitles
-  );
+    };
+    client.search(
+        {
+            index,
+            body,
+        },
+        logTitles
+    );
 };
 
 /**
@@ -56,21 +56,21 @@ module.exports.phrase = (field, query, slop) => {
  * run-func search queryString title '+(salad | soup) -broccoli  (tomato | apple)'
  */
 module.exports.queryString = (field, query) => {
-  const body = {
-    query: {
-      query_string: {
-        default_field: field,
-        query,
-      },
-    },
-  };
-  client.search(
-    {
-      index,
-      body
-    },
-    logTitles
-  );
+    const body = {
+        query: {
+            query_string: {
+                default_field: field,
+                query,
+            },
+        },
+    };
+    client.search(
+        {
+            index,
+            body
+        },
+        logTitles
+    );
 };
 
 /**
@@ -78,21 +78,21 @@ module.exports.queryString = (field, query) => {
  * run-func search term sodium 0
  */
 module.exports.term = async (field, value) => {
-  const body = {
-    query: {
-      term: {
-        [field]: value,
-      },
-    },
-  };
-  let result = await client.search(
-    {
-      index,
-      body,
-    },
-    logTitles
-  );
-  return result.body.hits.hits
+    const body = {
+        query: {
+            term: {
+                [field]: value,
+            },
+        },
+    };
+    let result = await client.search(
+        {
+            index,
+            body,
+        },
+        logTitles
+    );
+    return result.body.hits.hits
 };
 
 /**
@@ -104,23 +104,23 @@ module.exports.term = async (field, value) => {
  * run-func search range sodium 0 100
  */
 module.exports.range = (field, gte, lte) => {
-  const body = {
-    query: {
-      range: {
-        [field]: {
-          gte,
-          lte,
+    const body = {
+        query: {
+            range: {
+                [field]: {
+                    gte,
+                    lte,
+                },
+            },
         },
-      },
-    },
-  };
-  client.search(
-    {
-      index,
-      body,
-    },
-    logTitles
-  );
+    };
+    client.search(
+        {
+            index,
+            body,
+        },
+        logTitles
+    );
 };
 
 
@@ -129,26 +129,26 @@ module.exports.range = (field, gte, lte) => {
  * run-func search boolean
  */
 module.exports.boolean = () => {
-  const body = {
-    query: {
-      bool: {
-        filter: [{ range: { rating: { gte: 4 } } }],
-        must: [
-          { match: { categories: "Quick & Easy" } },
-          { match: { title: "beer" } },
-        ],
-        should: [
-          { match: { categories: "Cocktails" } },
-        ],
-        must_not: { match: { ingredients: "garlic" } }
-      },
-    },
-  };
-  client.search(
-    {
-      index,
-      body,
-    },
-    logTitles
-  );
+    const body = {
+        query: {
+            bool: {
+                filter: [{range: {rating: {gte: 4}}}],
+                must: [
+                    {match: {categories: "Quick & Easy"}},
+                    {match: {title: "beer"}},
+                ],
+                should: [
+                    {match: {categories: "Cocktails"}},
+                ],
+                must_not: {match: {ingredients: "garlic"}}
+            },
+        },
+    };
+    client.search(
+        {
+            index,
+            body,
+        },
+        logTitles
+    );
 };

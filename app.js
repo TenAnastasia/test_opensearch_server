@@ -7,21 +7,22 @@ app.use(express.json())
 app.get('/', async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Headers', '*')
-    if(req.query?.field && req.query?.query) {
+    if (req.query?.field && req.query?.query) {
         const field = req.query.field;
         const query = req.query.query;
         let r = await match(field, query)
         res.status(200).json({"data": r})
     } else {
-        res.status(200).json({"data": require("./user.json")
-    })
+        res.status(200).json({
+            "data": require("./user.json")
+        })
     }
 })
 
 app.get('/table', async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Headers', '*')
-    if(req.query?.id) {
+    if (req.query?.id) {
         const id = req.query.id;
         let result = await match('id', id)
         res.status(200).json({"data": result[0]})

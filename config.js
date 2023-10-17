@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Client } = require("@opensearch-project/opensearch");
+const {Client} = require("@opensearch-project/opensearch");
 
 module.exports.recipes = require("./user.json");
 
